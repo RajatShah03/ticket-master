@@ -9,7 +9,8 @@ export class DatabaseService implements OnModuleDestroy {
   public db: NodePgDatabase<typeof schema>;
 
   constructor() {
-    const connectionString = process.env.DATABASE_URL;
+    const connectionString =
+      'postgresql://ticketmaster:ticketmaster_password@localhost:5432/ticketmaster?schema=public'; // process.env.DATABASE_URL;
 
     this.pool = new Pool({
       connectionString,
