@@ -3,9 +3,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import {
   KAFKA_BROKER,
   KAFKA_CONSUMER_GROUP,
+  KAFKA_SERVICE,
 } from './constants/kafka.constants';
-
-const KAFKA_SERVICE = 'KAFKA_SERVICE';
 
 @Module({})
 export class KafkaModule {

@@ -30,3 +30,5 @@ export const KAFKA_TOPICS = {
   SEND_EMAIL: 'notification.send-email',
   SEND_PUSH: 'notification.send-push',
 } as const;
+
+export const KAFKA_SERVICE = 'KAFKA_SERVICE';
