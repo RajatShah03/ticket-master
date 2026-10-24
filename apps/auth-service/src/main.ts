@@ -16,5 +16,6 @@ async function bootstrap() {
   );
 
   await app.listen(SERVICES_PORTS.AUTH_SERVICE);
+  console.log(`AUTH_SERVICE: ${SERVICES_PORTS.AUTH_SERVICE}`);
 }
 bootstrap();

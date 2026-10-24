@@ -16,5 +16,6 @@ async function bootstrap() {
   );
 
   await app.listen(SERVICES_PORTS.API_GATEWAY);
+  console.log(`API_GATEWAY: ${SERVICES_PORTS.API_GATEWAY}`);
 }
 bootstrap();
