@@ -1,22 +1,76 @@
+import * as vitest from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotificationsServiceController } from './notifications-service.controller';
 import { NotificationsServiceService } from './notifications-service.service';
+import { NotificationsServiceController } from './notifications-service.controller';
 
-describe('NotificationsServiceController', () => {
-  let notificationsServiceController: NotificationsServiceController;
+vitest.describe('NotificationsServiceController', () => {
+  let controller: NotificationsServiceController;
+  let notificationsService: {
+    sendWelcomeEmail: vitest.Mock;
+    sendTicketPurchasedEmail: vitest.Mock;
+    sendTicketCancelEmail: vitest.Mock;
+  };
 
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+  vitest.beforeEach(async () => {
+    notificationsService = {
+      sendWelcomeEmail: vitest.vi.fn().mockResolvedValue(undefined),
+      sendTicketPurchasedEmail: vitest.vi.fn().mockResolvedValue(undefined),
+      sendTicketCancelEmail: vitest.vi.fn().mockResolvedValue(undefined),
+    };
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [NotificationsServiceController],
-      providers: [NotificationsServiceService],
+      providers: [
+        {
+          provide: NotificationsServiceService,
+          useValue: notificationsService,
+        },
+      ],
     }).compile();
-
-    notificationsServiceController = app.get<NotificationsServiceController>(NotificationsServiceController);
+    controller = module.get(NotificationsServiceController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(notificationsServiceController.getHello()).toBe('Hello World!');
+  vitest.it('returns notification service liveness', () => {
+    vitest.expect(controller.healthCheck()).toEqual({
+      status: 'ok',
+      service: 'notifications-service',
     });
+  });
+
+  vitest.it('handles user registration events', async () => {
+    const data = {
+      userId: 'user-1',
+      name: 'Person',
+      email: 'person@example.com',
+    };
+    await controller.handleUserRegistered(data);
+    vitest
+      .expect(notificationsService.sendWelcomeEmail)
+      .toHaveBeenCalledWith(data);
+  });
+
+  vitest.it('handles ticket purchase events', async () => {
+    const data = {
+      ticketId: 'ticket-1',
+      ticketCode: 'CODE',
+      userId: 'user-1',
+      email: 'person@example.com',
+      quantity: 2,
+      totalPrice: 50,
+    };
+    await controller.handleTicketPurchased(data);
+    vitest
+      .expect(notificationsService.sendTicketPurchasedEmail)
+      .toHaveBeenCalledWith(data);
+  });
+
+  vitest.it('handles ticket cancellation events', async () => {
+    const data = {
+      eventId: 'event-1',
+      email: 'person@example.com',
+    };
+    await controller.handleTicketCancelled(data);
+    vitest
+      .expect(notificationsService.sendTicketCancelEmail)
+      .toHaveBeenCalledWith(data);
   });
 });
