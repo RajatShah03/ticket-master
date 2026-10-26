@@ -16,7 +16,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class TicketsService {
-  private readonly ticketServiceUrl = `http:localhost:${SERVICES_PORTS.TICKETS_SERVICE}`;
+  private readonly ticketServiceUrl = `http://localhost:${SERVICES_PORTS.TICKETS_SERVICE}`;
 
   constructor(private readonly httpService: HttpService) {}
 
@@ -100,7 +100,7 @@ export class TicketsService {
     try {
       const response = await firstValueFrom(
         this.httpService.post<TicketActionResponse>(
-          `${this.ticketServiceUrl}/${id}`,
+          `${this.ticketServiceUrl}/${id}/cancel`,
           {},
           {
             headers: {
