@@ -14,6 +14,14 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthServiceController {
   constructor(private readonly authServiceService: AuthServiceService) {}
 
+  @Get('health')
+  healthCheck() {
+    return {
+      status: 'ok',
+      service: 'auth-service',
+    };
+  }
+
   @Post('register')
   register(@Body() dto: RegisterDto) {
     const { email, password, name } = dto;

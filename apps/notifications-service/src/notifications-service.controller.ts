@@ -11,7 +11,7 @@ export class NotificationsServiceController {
     private readonly notificationsServiceService: NotificationsServiceService,
   ) {}
 
-  @Get()
+  @Get('health')
   healthCheck() {
     return {
       status: 'ok',

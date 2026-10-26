@@ -14,6 +14,14 @@ import { CheckInTicketDto, PurchaseTicketDto } from '@app/common';
 export class TicketsServiceController {
   constructor(private readonly ticketsServiceService: TicketsServiceService) {}
 
+  @Get('health')
+  healthCheck() {
+    return {
+      status: 'ok',
+      service: 'tickets-service',
+    };
+  }
+
   @Get('my-tickets')
   findMyTickets(@Headers('x-user-id') userId: string) {
     return this.ticketsServiceService.findMyTicket(userId);

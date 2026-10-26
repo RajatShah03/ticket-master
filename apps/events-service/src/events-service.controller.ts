@@ -15,6 +15,14 @@ import { CreateEventDto, UpdateEventDto } from '@app/common';
 export class EventsServiceController {
   constructor(private readonly eventsServiceService: EventsServiceService) {}
 
+  @Get('health')
+  healthCheck() {
+    return {
+      status: 'ok',
+      service: 'events-service',
+    };
+  }
+
   @Post()
   create(
     @Body() createEventDto: CreateEventDto,
