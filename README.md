@@ -31,6 +31,27 @@
 $ pnpm install
 ```
 
+## Thunder Client requests
+
+Import `.thunder-client/ticket-master.json` as a collection and
+`.thunder-client/ticket-master.env.json` as an environment in the Thunder Client
+VS Code extension. Both files now use Postman 2.1 import format, which Thunder
+Client supports. The collection includes API gateway requests and direct
+requests for the auth, events, and tickets services. Select the `Ticket Master
+Local` environment, register and log in, then set `token` to the returned
+`access_token` and `userId` to the logged-in user's `id`. Set `eventId` to an
+event's `id` before using event-specific requests; ticket lookup, cancellation,
+and check-in requests also use `ticketId` or `ticketCode` as appropriate.
+
+Direct events-service requests use `x-user-id` (and, for updates, publishing,
+and cancellation, `x-user-role`) headers because that internal service does not
+authenticate JWTs itself. The gateway routes handle authentication and forward
+the user identity to the events service.
+
+Direct tickets-service requests use the `x-user-id` header for the user or
+event organizer, matching the internal service API. Gateway ticket requests
+use the JWT bearer token instead.
+
 ## Compile and run the project
 
 ```bash
